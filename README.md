@@ -37,12 +37,8 @@ Deploying to Vercel
 
 Vercel Node version note
 
-- If you see native build failures for packages like `canvas`, Vercel may be using a Node.js version that lacks prebuilt binaries for that package (e.g., Node 22). Pin the Node version to 18 in one of the following ways:
-	- Add an `engines.node` field in `package.json` (already added: `"node": "18.x"`).
-	- In the Vercel project settings, set the Node.js version to `18`.
-	- Commit a `pnpm-lock.yaml` from a local machine that uses Node 18.
-
-This project is configured to use Node 18 to avoid native build errors for `canvas` during deploy.
+- Vercel currently requires Node.js 24 for this project. The `engines.node` field in `package.json` has been set to `"24.x"` to match that requirement.
+- If you encounter native build failures for packages like `canvas`, consider pinning the Node version in the Vercel project settings or using compatible prebuilt binaries.
 
 UI changes in this update
 
