@@ -25,6 +25,7 @@ export default function RootLayout({
               <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
                 <h1 className="text-lg font-semibold">SlideCraft</h1>
                 <p className="text-sm text-muted-foreground/80">Edit and export slides in-browser</p>
+                <span className="ml-auto text-xs text-muted-foreground/80">Docker & CI removed</span>
               </div>
             </header>
             <main className="max-w-7xl mx-auto px-4 py-6">{children}</main>

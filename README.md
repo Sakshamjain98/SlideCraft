@@ -18,30 +18,11 @@ pnpm build
 pnpm start
 ```
 
-Docker (build & run)
+Note about Docker & CI
 
-```bash
-# build image
-docker build -t ppt-editor:latest .
+This repository no longer includes Docker images or a GitHub Actions CI workflow. Development and deployment are intended to use the local `pnpm` workflow and Vercel (or your preferred hosting).
 
-# run container
-docker run -p 3000:3000 --env NODE_ENV=production ppt-editor:latest
-```
-
-Docker notes
-
-- Uses `pnpm` inside the image. If you prefer `npm`/`yarn`, update the `Dockerfile` accordingly.
-- .dockerignore excludes build artifacts and node_modules.
-
-docker-compose (development / quick run)
-
-```bash
-docker compose up --build
-```
-
-CI workflow
-
-- A GitHub Actions workflow was added at `.github/workflows/ci.yml` that runs `pnpm install`, `pnpm build`, and `pnpm lint` for pushes and pull requests.
+If you previously used Docker or CI for builds, please migrate any automation to your hosting platform's recommended pipelines.
 
 UI polish
 
