@@ -35,11 +35,11 @@ export default function Editor() {
         {showTutorial && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={closeTutorial}>
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl" onClick={(e) => e.stopPropagation()}>
-              <h2 className="text-xl font-bold mb-4 text-black">Welcome to PowerPoint Editor</h2>
+                <h2 className="text-xl font-bold mb-4 text-black">Welcome to SlideCraft</h2>
               <div className="space-y-4 text-black">
                 <div>
                   <h3 className="font-semibold">Getting Started</h3>
-                  <p>This is a web-based PowerPoint editor. Here's how to use it:</p>
+                     <p>This is a web-based slide editor (SlideCraft). Here's how to use it:</p>
                 </div>
                 <div className="space-y-2">
                   <p><strong>1.</strong> Use the slide thumbnails on the left to navigate between slides.</p>

@@ -270,7 +270,7 @@ export default function FileOperations() {
       {showHelp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={toggleHelp}>
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-4 text-black">PowerPoint Editor Help</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">SlideCraft Help</h2>
             <div className="space-y-4 text-black">
               <div>
                 <h3 className="font-semibold">Navigation</h3>

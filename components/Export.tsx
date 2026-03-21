@@ -25,8 +25,8 @@ export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
 
       // Set presentation properties
       pptx.title = fileName;
-      pptx.subject = "Created with PowerPoint Editor";
-      pptx.author = "PowerPoint Editor User";
+      pptx.subject = "Created with SlideCraft";
+      pptx.author = "SlideCraft User";
 
       // Create a slide
       const slide = pptx.addSlide();
@@ -51,14 +51,14 @@ export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
         // Skip objects with no width or height
         if (obj.width === 0 || obj.height === 0) return;
         
-        // Convert object position to PowerPoint's percentage-based coordinates
+        // Convert object position to slide export percentage-based coordinates
         // Adjust for object's center point vs top-left origin
         const scaleX = obj.scaleX || 10;
         const scaleY = obj.scaleY || 10;
         const objWidth = obj.width * scaleX;
         const objHeight = obj.height * scaleY;
         
-        // Calculate object position (PowerPoint uses percentages)
+        // Calculate object position (slide export uses percentages)
         // We need to take into account the center point vs top-left
         let left, top;
         
@@ -66,12 +66,12 @@ export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
           left = obj.left / slideWidth;
           top = obj.top / slideHeight;
         } else {
-          // If origin is left/top, adjust to center point for PowerPoint
+          // If origin is left/top, adjust to center point for slide export
           left = (obj.left + objWidth / 2) / slideWidth;
           top = (obj.top + objHeight / 2) / slideHeight;
         }
         
-        // Convert width/height to PowerPoint's percentage
+        // Convert width/height to slide export percentage
         const width = objWidth / slideWidth;
         const height = objHeight / slideHeight;
         
@@ -88,7 +88,7 @@ export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
             y: top - height/2, // Convert from center to top origin
             w: width,
             h: height,
-            fontSize: (obj.fontSize || 24) / 2, // PowerPoint font sizes are roughly half of canvas
+            fontSize: (obj.fontSize || 24) / 2, // exported slide font sizes are roughly half of canvas
             bold: obj.fontWeight === "bold",
             italic: obj.fontStyle === "italic",
             underline: obj.underline,
@@ -442,8 +442,8 @@ export function exportPresentationToPPTX(slides, fileName = "Presentation") {
 
       // Set presentation properties
       pptx.title = fileName;
-      pptx.subject = "Created with PowerPoint Editor";
-      pptx.author = "PowerPoint Editor User";
+      pptx.subject = "Created with SlideCraft";
+      pptx.author = "SlideCraft User";
 
       // Process each slide
       slides.forEach((slideData) => {

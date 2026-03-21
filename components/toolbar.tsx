@@ -492,7 +492,7 @@ export default function Toolbar() {
   )
 
   return (
-    <div className="bg-white border-b border-gray-200 p-2">
+    <div className="toolbar bg-white/90 border-b border-border p-2 app-card sticky top-0 z-40 overflow-x-auto">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="text-white">
         <TabsList className="mb-2 bg-white border border-gray-200">
           <TabsTrigger value="insert" className="text-black">
