@@ -20,7 +20,13 @@ jobs:
           corepack enable
           corepack prepare pnpm@8 --activate
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "pnpm-lock.yaml not found — installing without --frozen-lockfile"
+            pnpm install --no-frozen-lockfile
+          fi
       - name: Build
         run: pnpm build
       - name: Lint
