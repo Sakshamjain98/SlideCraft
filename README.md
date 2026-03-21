@@ -40,6 +40,13 @@ Vercel Node version note
 - Vercel currently requires Node.js 24 for this project. The `engines.node` field in `package.json` has been set to `"24.x"` to match that requirement.
 - If you encounter native build failures for packages like `canvas`, consider pinning the Node version in the Vercel project settings or using compatible prebuilt binaries.
 
+Build error: `node:https` import
+
+- If your build fails with errors referencing `node:https` or similar Node built-ins (for example coming from `pptxgenjs`), a webpack client build may be trying to resolve Node-only modules. To address this the project adds a webpack fallback/alias in `next.config.mjs` to ignore these built-ins for client bundles. If you still see errors, try one of the following:
+	- Ensure the code using `pptxgenjs` is only loaded on the client (use dynamic import guarded by `typeof window !== 'undefined'`).
+	- Replace `pptxgenjs` with a browser-friendly alternative or use a server-side export pipeline.
+	- Update `next.config.mjs` to adjust fallbacks/aliases for any specific builtin modules reported in the build log.
+
 UI changes in this update
 
 - Added a simple responsive header and centered main container in `app/layout.tsx`.

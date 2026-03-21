@@ -27,6 +27,23 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  webpack: (config, { isServer }) => {
+    // Prevent webpack from trying to resolve Node built-ins used by some libs
+    // (e.g. `node:https` imported by `pptxgenjs`) for client bundles.
+    config.resolve = config.resolve || {}
+    config.resolve.fallback = {
+      ...(config.resolve.fallback || {}),
+      https: false,
+      http: false,
+      tls: false,
+    }
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      'node:https': false,
+    }
+
+    return config
+  },
 }
 
 if (userConfig) {
