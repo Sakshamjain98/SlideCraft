@@ -54,6 +54,15 @@ Deploying to Vercel
 2. Framework: Next.js (auto-detected). Build command: `pnpm build`. Output directory: (leave empty).
 3. Ensure environment variables (if any) are added in Vercel dashboard.
 
+Vercel Node version note
+
+- If you see native build failures for packages like `canvas`, Vercel may be using a Node.js version that lacks prebuilt binaries for that package (e.g., Node 22). Pin the Node version to 18 in one of the following ways:
+	- Add an `engines.node` field in `package.json` (already added: `"node": "18.x"`).
+	- In the Vercel project settings, set the Node.js version to `18`.
+	- Commit a `pnpm-lock.yaml` from a local machine that uses Node 18.
+
+This project is configured to use Node 18 to avoid native build errors for `canvas` during deploy.
+
 UI changes in this update
 
 - Added a simple responsive header and centered main container in `app/layout.tsx`.
