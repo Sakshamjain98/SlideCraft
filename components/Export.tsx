@@ -1,6 +1,9 @@
+"use client";
+
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
-import pptxgen from "pptxgenjs";
+// `pptxgenjs` is dynamically imported in functions below to avoid bundling
+// server-only node modules (like `https`) during Next.js build.
 
 /**
  * Export the current canvas as a PPTX file
@@ -9,19 +12,19 @@ import pptxgen from "pptxgenjs";
  * @param {Object} options - Additional export options
  * @returns {Promise<boolean>} - Success status
  */
-export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
+export async function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
   if (!canvas) return Promise.resolve(false);
 
-  return new Promise((resolve, reject) => {
-    try {
-      // Make sure pptxgen is available
-      if (typeof pptxgen !== 'function') {
-        console.error("pptxgen library not found");
-        reject(new Error("pptxgen library not found"));
-        return;
-      }
+  try {
+    // Dynamically import pptxgenjs on the client only
+    const pptxModule = await import('pptxgenjs');
+    const PptxGenJS = pptxModule?.default ?? pptxModule;
+    if (typeof PptxGenJS !== 'function') {
+      console.error('pptxgen library not found');
+      return Promise.reject(new Error('pptxgen library not found'));
+    }
 
-      const pptx = new pptxgen();
+    const pptx = new PptxGenJS();
 
       // Set presentation properties
       pptx.title = fileName;
@@ -304,19 +307,13 @@ export function exportAsPPTX(canvas, fileName = "Presentation", options = {}) {
         // This would need integration with your slide management code
       }
 
-      // Save the file
-      pptx.writeFile({ fileName: `${fileName}.pptx` })
-        .then(() => resolve(true))
-        .catch(error => {
-          console.error("Error saving PPTX:", error);
-          reject(error);
-        });
-    } catch (error) {
-      console.error("Error exporting to PPTX:", error);
-      reject(error);
-      return false;
-    }
-  });
+    // Save the file
+    await pptx.writeFile({ fileName: `${fileName}.pptx` });
+    return true;
+  } catch (error) {
+    console.error('Error exporting to PPTX:', error);
+    return Promise.reject(error);
+  }
 }
 
 
@@ -433,55 +430,55 @@ export function exportAsSVG(canvas, fileName = "Canvas") {
  * @param {string} fileName - The filename for the exported file
  * @returns {Promise<boolean>} - Success status
  */
-export function exportPresentationToPPTX(slides, fileName = "Presentation") {
+export async function exportPresentationToPPTX(slides, fileName = "Presentation") {
   if (!slides || !slides.length) return Promise.resolve(false);
 
-  return new Promise((resolve, reject) => {
-    try {
-      const pptx = new pptxgen();
-
-      // Set presentation properties
-      pptx.title = fileName;
-      pptx.subject = "Created with SlideCraft";
-      pptx.author = "SlideCraft User";
-
-      // Process each slide
-      slides.forEach((slideData) => {
-        const { canvas, background } = slideData;
-        if (!canvas) return;
-
-        // Create a slide
-        const slide = pptx.addSlide();
-
-        // Set background if specified
-        if (background) {
-          slide.background = { color: background };
-        }
-
-        // Add the slide content as an image
-        const imgData = canvas.toDataURL("image/png", 1.0);
-        slide.addImage({
-          data: imgData,
-          x: 0,
-          y: 0,
-          w: "100%",
-          h: "100%"
-        });
-      });
-
-      // Save the file
-      pptx.writeFile({ fileName: `${fileName}.pptx` })
-        .then(() => resolve(true))
-        .catch(error => {
-          console.error("Error saving PPTX:", error);
-          reject(error);
-        });
-    } catch (error) {
-      console.error("Error exporting presentation to PPTX:", error);
-      reject(error);
-      return false;
+  try {
+    const pptxModule = await import('pptxgenjs');
+    const PptxGenJS = pptxModule?.default ?? pptxModule;
+    if (typeof PptxGenJS !== 'function') {
+      console.error('pptxgen library not found');
+      return Promise.reject(new Error('pptxgen library not found'));
     }
-  });
+
+    const pptx = new PptxGenJS();
+
+    // Set presentation properties
+    pptx.title = fileName;
+    pptx.subject = 'Created with SlideCraft';
+    pptx.author = 'SlideCraft User';
+
+    // Process each slide
+    slides.forEach((slideData) => {
+      const { canvas, background } = slideData;
+      if (!canvas) return;
+
+      // Create a slide
+      const slide = pptx.addSlide();
+
+      // Set background if specified
+      if (background) {
+        slide.background = { color: background };
+      }
+
+      // Add the slide content as an image
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      slide.addImage({
+        data: imgData,
+        x: 0,
+        y: 0,
+        w: '100%',
+        h: '100%'
+      });
+    });
+
+    // Save the file
+    await pptx.writeFile({ fileName: `${fileName}.pptx` });
+    return true;
+  } catch (error) {
+    console.error('Error exporting presentation to PPTX:', error);
+    return Promise.reject(error);
+  }
 }
 
 /**
